@@ -93,23 +93,27 @@ if st.button("Upload to MongoDB"):
         st.success("Uploaded to MongoDB!")
 
 # Download as CSV
-if st.button("Download as CSV"):
-        tweets = twitter_scraper(keyword, tweet_limit, start_date, end_date)
-        tweet_data = create_dataframe(tweets)
+def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8')
 
-        st.write("Saving dataframe as CSV")
-        csv = tweet_data.to_csv(index=False)
-        b64 = base64.b64encode(csv.encode()).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="tweet_data.csv">Download CSV File</a>'
-        st.markdown(href, unsafe_allow_html=True)
+csv = convert_df(tweets_df1)
 
-# Download as JSON
-if st.button("Download as JSON"):
-        tweets = twitter_scraper(keyword, tweet_limit, start_date, end_date)
-        tweet_data = create_dataframe(tweets)
-        
-        st.write("Saving dataframe as JSON")
-        json_string = tweet_data.to_json(indent=2)
-        b64 =     base64.b64encode(json_string.encode()).decode()
-        href = f'<a href="data:file/json;base64,{b64}" download="tweet_data.json">Download JSON File</a>'
-        st.markdown(href, unsafe_allow_html=True)
+st.download_button(
+"Press to Download the Dataframe to CSV file format",
+csv,
+f"{search}_tweet.csv",
+"text/csv",
+key='download-csv'
+)
+
+def convert_json(df):
+    return df.to_json().encode('utf-8')
+
+json = convert_json(tweets_df1)
+st.download_button(
+"Press to Download the Dataframe to JSON file format",
+json,
+f"{search}_tweet.json",
+"text/json",
+key='download-json'
+)
