@@ -4,7 +4,6 @@ import snscrape.modules.twitter as sntwitter
 from pymongo import MongoClient
 import json
 import streamlit as st
-import base64
 import datetime
 
 
@@ -96,10 +95,10 @@ if st.button("Upload to MongoDB"):
 def convert_df(df):
         return df.to_csv(index=False).encode('utf-8')
 
-csv = convert_df(tweets_df1)
+csv = convert_df(tweet_data)
 
 st.download_button(
-"Press to Download the Dataframe to CSV file format",
+" Download as CSV",
 csv,
 f"{search}_tweet.csv",
 "text/csv",
@@ -111,7 +110,7 @@ def convert_json(df):
 
 json = convert_json(tweets_df1)
 st.download_button(
-"Press to Download the Dataframe to JSON file format",
+"Download as JSON ",
 json,
 f"{search}_tweet.json",
 "text/json",
